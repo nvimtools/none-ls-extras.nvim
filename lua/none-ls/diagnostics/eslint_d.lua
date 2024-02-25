@@ -1,4 +1,4 @@
-return require("none-ls.builtins.diagnostics.eslint").with({
+return require("none-ls.diagnostics.eslint").with({
     name = "eslint_d",
     meta = {
         url = "https://github.com/mantoni/eslint_d.js/",
