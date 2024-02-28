@@ -141,8 +141,6 @@ local code_action_handler = function(params)
     return actions
 end
 
-
-
 return h.make_builtin({
     name = "eslint",
     meta = {

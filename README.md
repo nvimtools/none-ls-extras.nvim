@@ -1,6 +1,7 @@
 # none-ls-extras.nvim
 
-Extra sources for [nvimtools/none-ls.nvim](https://github.com/nvimtools/none-ls.nvim).
+Extra sources for
+[nvimtools/none-ls.nvim](https://github.com/nvimtools/none-ls.nvim).
 
 ## Usage
 

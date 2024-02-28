@@ -5,8 +5,6 @@ local u = require("null-ls.utils")
 
 local FORMATTING = methods.internal.FORMATTING
 
-
-
 return h.make_builtin({
     name = "eslint",
     meta = {

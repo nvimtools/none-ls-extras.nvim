@@ -5,7 +5,6 @@ local FORMATTING = methods.internal.FORMATTING
 
 -- eslint_d has a --fix-to-stdout flag, so we can avoid parsing json
 
-
 return h.make_builtin({
     name = "eslint_d",
     meta = {
