@@ -1,0 +1,4 @@
+.tests/
+
+# prettier cache
+node_modules/
