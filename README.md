@@ -39,6 +39,8 @@ Use `require("none-ls.METHOD.TOOL")` instead of `null_ls.builtins.METHOD.TOOL` t
 
 ## Related projects
 
+You can search for sources via the [`none-ls-sources` topic](https://github.com/topics/none-ls-sources).
+
 - [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim)
 - [none-ls-php.nvim](https://github.com/gbprod/none-ls-php.nvim)
 - [none-ls-shellcheck.nvim](https://github.com/gbprod/none-ls-shellcheck.nvim)
