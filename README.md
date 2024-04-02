@@ -18,6 +18,15 @@ This should be used as a dependency of **none-ls.nvim**.
   }
 ```
 
+### [rocks.nvim](https://github.com/nvim-neorocks/rocks.nvim)
+
+```vim
+:Rocks install none-ls-extras.nvim scm
+```
+
+Installing this plugin with rocks.nvim will automatically install
+none-ls.nvim if not already installed.
+
 ## Setup
 
 Follow the steps in null-ls [setup](https://github.com/nvimtools/none-ls.nvim?tab=readme-ov-file#setup) section.
