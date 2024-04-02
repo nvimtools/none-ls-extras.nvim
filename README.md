@@ -24,12 +24,14 @@ This should be used as a dependency of **none-ls.nvim**.
 :Rocks install none-ls-extras.nvim scm
 ```
 
-Installing this plugin with rocks.nvim will automatically install
-none-ls.nvim if not already installed.
+Installing this plugin with rocks.nvim will automatically install none-ls.nvim
+if not already installed.
 
 ## Setup
 
-Follow the steps in null-ls [setup](https://github.com/nvimtools/none-ls.nvim?tab=readme-ov-file#setup) section.
+Follow the steps in null-ls
+[setup](https://github.com/nvimtools/none-ls.nvim?tab=readme-ov-file#setup)
+section.
 
 ```lua
 local null_ls = require("null-ls")
@@ -44,11 +46,13 @@ null_ls.setup {
 }
 ```
 
-Use `require("none-ls.METHOD.TOOL")` instead of `null_ls.builtins.METHOD.TOOL` to use these extras.
+Use `require("none-ls.METHOD.TOOL")` instead of `null_ls.builtins.METHOD.TOOL`
+to use these extras.
 
 ## Related projects
 
-You can search for sources via the [`none-ls-sources` topic](https://github.com/topics/none-ls-sources).
+You can search for sources via the
+[`none-ls-sources` topic](https://github.com/topics/none-ls-sources).
 
 - [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim)
 - [none-ls-php.nvim](https://github.com/gbprod/none-ls-php.nvim)
