@@ -18,3 +18,6 @@ jobs:
           version: "scm"
           dependencies: |
             none-ls.nvim
+          extra_luarocks_args: |
+            --force
+            --dev
