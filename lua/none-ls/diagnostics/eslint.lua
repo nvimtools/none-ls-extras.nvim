@@ -39,7 +39,15 @@ return h.make_builtin({
         description = "A linter for the JavaScript ecosystem.",
     },
     method = DIAGNOSTICS,
-    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+    filetypes = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue",
+        "svelte",
+        "astro",
+    },
     generator_opts = {
         command = "eslint",
         args = { "-f", "json", "--stdin", "--stdin-filename", "$FILENAME" },

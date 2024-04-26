@@ -148,7 +148,15 @@ return h.make_builtin({
         description = "Injects actions to fix ESLint issues or ignore broken rules.",
     },
     method = CODE_ACTION,
-    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+    filetypes = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue",
+        "svelte",
+        "astro",
+    },
     generator_opts = {
         command = "eslint",
         format = "json_raw",
