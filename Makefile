@@ -1,4 +1,4 @@
-.PHONY: test test-file install-hooks check clean autogen
+.PHONY: test test-file install-hooks check clean
 
 test:
 	nvim --headless --noplugin -u test/minimal_init.lua -c "lua require(\"plenary.test_harness\").test_directory_command('test/spec {minimal_init = \"test/minimal_init.lua\"}')"
