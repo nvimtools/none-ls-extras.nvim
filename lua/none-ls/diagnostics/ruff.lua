@@ -61,6 +61,7 @@ return h.make_builtin({
     generator_opts = {
         command = "ruff",
         args = {
+            "check",
             "-n",
             "-e",
             "--stdin-filename",
