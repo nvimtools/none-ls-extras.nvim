@@ -1,8 +1,0 @@
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: none-ls-extras.nvim
-Upstream-Contact: Zephyr Lykos <self@mochaa.ws>
-Source: https://github.com/nvimtools/none-ls-extras.nvim
-
-Files: *
-Copyright: Copyright 2021 Jose Alvarez <j.alvarez11@icloud.com>
-License: Unlicense

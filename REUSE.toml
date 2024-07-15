@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "none-ls-extras.nvim"
+SPDX-PackageSupplier = "Zephyr Lykos <self@mochaa.ws>"
+SPDX-PackageDownloadLocation = "https://github.com/nvimtools/none-ls-extras.nvim"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright 2021 Jose Alvarez <j.alvarez11@icloud.com>"
+SPDX-License-Identifier = "Unlicense"
