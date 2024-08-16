@@ -34,7 +34,7 @@ return h.make_builtin({
         end),
         on_output = function(params, done)
             done({ { text = params.output } })
-        end
+        end,
     },
     factory = h.formatter_factory,
 })
