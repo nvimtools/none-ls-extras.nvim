@@ -6,48 +6,34 @@ If you don't understand what this does, use ruff-lsp instead.
 local h = require("null-ls.helpers")
 local methods = require("null-ls.methods")
 local DIAGNOSTICS = methods.internal.DIAGNOSTICS
-local custom_end_col = {
-    end_col = function(entries, line)
-        if not line then
-            return
-        end
 
-        local start_col = entries["col"]
-        local message = entries["message"]
-        local code = entries["code"]
-        local default_position = start_col + 1
-
-        local pattern = nil
-        local trimmed_line = line:sub(start_col, -1)
-
-        if code == "F841" or code == "F823" then
-            pattern = [[Local variable %`(.*)%`]]
-        elseif code == "F821" or code == "F822" then
-            pattern = [[Undefined name %`(.*)%`]]
-        elseif code == "F401" then
-            pattern = [[%`(.*)%` imported but unused]]
-        elseif code == "F841" then
-            pattern = [[Local variable %`(.*)%` is assigned to but never used]]
-        end
-        if not pattern then
-            return default_position
-        end
-
-        local results = message:match(pattern)
-        local _, end_col = trimmed_line:find(results, 1, true)
-
-        if not end_col then
-            return default_position
-        end
-
-        end_col = end_col + start_col
-        if end_col > tonumber(start_col) then
-            return end_col
-        end
-
-        return default_position
-    end,
+local code_to_severity = {
+    E = h.diagnostics.severities["error"], -- pycodestyle errors
+    W = h.diagnostics.severities["warning"], -- pycodestyle warnings
+    F = h.diagnostics.severities["information"], -- pyflakes
+    A = h.diagnostics.severities["information"], -- flake8-builtins
+    B = h.diagnostics.severities["warning"], -- flake8-bugbear
+    C = h.diagnostics.severities["warning"], -- flake8-comprehensions
+    T = h.diagnostics.severities["information"], -- flake8-print
+    U = h.diagnostics.severities["information"], -- pyupgrade
+    D = h.diagnostics.severities["information"], -- pydocstyle
+    M = h.diagnostics.severities["information"], -- Meta
 }
+local severity_default = h.diagnostics.severities["error"]
+
+local function nested_entry_getter(key1, key2)
+    return function(entries, line)
+        return entries[key1][key2]
+    end
+end
+
+local function ruff_severity(entries, line)
+    local code = entries["code"]
+    if code ~= nil then
+        return code_to_severity[string.sub(code, 1, 1)] or severity_default
+    end
+    return severity_default
+end
 
 return h.make_builtin({
     name = "ruff",
@@ -64,38 +50,33 @@ return h.make_builtin({
             "check",
             "-n",
             "-e",
-            "--output-format=concise",
+            "--output-format=json",
             "--stdin-filename",
             "$FILENAME",
             "-",
         },
-        format = "line",
+        format = "json",
         check_exit_code = function(code)
             return code == 0
         end,
         to_stdin = true,
         ignore_stderr = true,
-        on_output = h.diagnostics.from_pattern(
-            [[(%d+):(%d+): ((%u)%w+) (.*)]],
-            { "row", "col", "code", "severity", "message" },
-            {
-                adapters = {
-                    custom_end_col,
+        on_output = h.diagnostics.from_json({
+            attributes = {
+                _location = "location",
+                _end_location = "end_location",
+                code = "code",
+            },
+            adapters = {
+                {
+                    row = nested_entry_getter("_location", "row"),
+                    col = nested_entry_getter("_location", "column"),
+                    end_row = nested_entry_getter("_end_location", "row"),
+                    end_col = nested_entry_getter("_end_location", "column"),
+                    severity = ruff_severity,
                 },
-                severities = {
-                    E = h.diagnostics.severities["error"], -- pycodestyle errors
-                    W = h.diagnostics.severities["warning"], -- pycodestyle warnings
-                    F = h.diagnostics.severities["information"], -- pyflakes
-                    A = h.diagnostics.severities["information"], -- flake8-builtins
-                    B = h.diagnostics.severities["warning"], -- flake8-bugbear
-                    C = h.diagnostics.severities["warning"], -- flake8-comprehensions
-                    T = h.diagnostics.severities["information"], -- flake8-print
-                    U = h.diagnostics.severities["information"], -- pyupgrade
-                    D = h.diagnostics.severities["information"], -- pydocstyle
-                    M = h.diagnostics.severities["information"], -- Meta
-                },
-            }
-        ),
+            },
+        }),
     },
     factory = h.generator_factory,
 })
