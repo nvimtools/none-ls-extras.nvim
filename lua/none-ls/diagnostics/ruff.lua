@@ -64,6 +64,7 @@ return h.make_builtin({
             "check",
             "-n",
             "-e",
+            "--output-format=concise",
             "--stdin-filename",
             "$FILENAME",
             "-",
