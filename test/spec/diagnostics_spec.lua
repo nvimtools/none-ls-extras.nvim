@@ -188,4 +188,28 @@ describe("diagnostics", function()
             }, diagnostic)
         end)
     end)
+
+    describe("dscanner", function()
+        local linter = diagnostics.dscanner
+        local parser = linter._opts.on_output
+        local file = {
+            [[enum uint min = uint.min;]],
+        }
+
+        it("should create a diagnostic", function()
+            local output =
+                [[::warning file=./source/crypto_random.d,line=31,endLine=31,col=13,endColumn=16,title=Warning (undocumented_declaration_check)::Public declaration 'min' is undocumented.]]
+            local diagnostic = parser(output, { content = file })
+            assert.same({
+                filename = "./source/crypto_random.d",
+                row = "31",
+                end_lnum = "31",
+                col = "13",
+                end_col = "16",
+                severity = 2, -- warning
+                code = "undocumented_declaration_check",
+                message = "Public declaration 'min' is undocumented.",
+            }, diagnostic)
+        end)
+    end)
 end)
