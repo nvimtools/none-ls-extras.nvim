@@ -6,23 +6,31 @@ local FORMATTING = methods.internal.FORMATTING
 return h.make_builtin({
     name = "ansiblelint",
     meta = {
-        url = "https://ansible.readthedocs.io/projects/lint/autofix/",
+        url = "https://ansible.readthedocs.io/projects/lint/rules/yaml/",
         description = "Ansible style formatting using ansible-lint --fix",
         notes = {
-            "Ansible-lint autofix provides autofixing capabilities for issues identified by ansible-lint via the ansible-lint --fix option. This command can automatically reformat YAML files and apply transforms for specific rules to fix or simplify identified issues.",
+            "`ansible-lint --fix` writes changes to the file on disk, instead of sending changes to stdout.",
+            "This is because stdout is already being used to report linting violations.",
+            "Diagnostics are reported to stderr, so it can't use that either.",
+            "Both are reported, even when Autofix (`--fix`) is activated.",
+            "We use a temporary file to get around this.",
+            "The temporary file is modified and is then read back into the buffer.",
         },
     },
     method = FORMATTING,
     filetypes = { "yaml.ansible" },
     generator_opts = {
         command = "ansible-lint",
-        args = { "--fix" },
+        args = {
+            "--fix",
+            "$FILENAME",
+        },
+        to_stdin = false,
+        format = "raw",
+        to_temp_file = true,
+        from_temp_file = true,
         check_exit_code = function(code)
             return code == 0 or code == 2
-        end,
-        on_output = function(_)
-            vim.cmd("checktime")
-            return nil
         end,
     },
     factory = h.formatter_factory,
