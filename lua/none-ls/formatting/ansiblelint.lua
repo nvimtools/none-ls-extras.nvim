@@ -6,7 +6,7 @@ local FORMATTING = methods.internal.FORMATTING
 return h.make_builtin({
     name = "ansiblelint",
     meta = {
-        url = "https://ansible.readthedocs.io/projects/lint/rules/yaml/",
+        url = "https://ansible.readthedocs.io/projects/lint/autofix/",
         description = "Ansible style formatting using ansible-lint --fix",
         notes = {
             "Ansible-lint autofix provides autofixing capabilities for issues identified by ansible-lint via the ansible-lint --fix option. This command can automatically reformat YAML files and apply transforms for specific rules to fix or simplify identified issues.",
