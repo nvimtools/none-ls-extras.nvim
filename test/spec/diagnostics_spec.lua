@@ -1,7 +1,12 @@
 local stub = require("luassert.stub")
 local spy = require("luassert.spy")
 
-local diagnostics = require("null-ls.builtins").diagnostics
+local diagnostics = {
+    eslint = require("none-ls.diagnostics.eslint"),
+    flake8 = require("none-ls.diagnostics.flake8"),
+    dscanner = require("none-ls.diagnostics.dscanner"),
+    oxlint = require("none-ls.diagnostics.oxlint"),
+}
 
 stub(vim, "notify")
 
@@ -209,6 +214,100 @@ describe("diagnostics", function()
                 severity = 2, -- warning
                 code = "undocumented_declaration_check",
                 message = "Public declaration 'min' is undocumented.",
+            }, diagnostic)
+        end)
+    end)
+
+    describe("oxlint", function()
+        local linter = diagnostics.oxlint
+        local parser = linter._opts.on_output
+
+        it("should create a diagnostic with error severity", function()
+            local output = vim.json.decode([[
+            {
+              "diagnostics": [
+                {
+                  "message": "Variable 'foo' is declared but never used. Unused variables should start with a '_'.",
+                  "code": "eslint(no-unused-vars)",
+                  "severity": "error",
+                  "causes": [],
+                  "url": "https://oxc.rs/docs/guide/usage/linter/rules/eslint/no-unused-vars.html",
+                  "help": "Consider removing this declaration.",
+                  "filename": "/tmp/sample.js",
+                  "labels": [
+                    {
+                      "label": "'foo' is declared here",
+                      "span": {
+                        "offset": 6,
+                        "length": 3,
+                        "line": 1,
+                        "column": 7
+                      }
+                    }
+                  ],
+                  "related": []
+                }
+              ],
+              "number_of_files": 1,
+              "number_of_rules": 93,
+              "threads_count": 12,
+              "start_time": 0.017990223
+            }]])
+            local diagnostic = parser({ output = output })
+            assert.same({
+                {
+                    row = 1,
+                    end_row = 1,
+                    col = 7,
+                    end_col = 10,
+                    severity = 1,
+                    code = "eslint(no-unused-vars)",
+                    message = "Variable 'foo' is declared but never used. Unused variables should start with a '_'.",
+                },
+            }, diagnostic)
+        end)
+
+        it("should create a diagnostic with warning severity", function()
+            local output = vim.json.decode([[
+            {
+              "diagnostics": [
+                {
+                  "message": "`debugger` statement is not allowed",
+                  "code": "eslint(no-debugger)",
+                  "severity": "warning",
+                  "causes": [],
+                  "url": "https://oxc.rs/docs/guide/usage/linter/rules/eslint/no-debugger.html",
+                  "help": "Remove the debugger statement",
+                  "filename": "/tmp/sample.js",
+                  "labels": [
+                    {
+                      "span": {
+                        "offset": 0,
+                        "length": 9,
+                        "line": 1,
+                        "column": 1
+                      }
+                    }
+                  ],
+                  "related": []
+                }
+              ],
+              "number_of_files": 1,
+              "number_of_rules": 93,
+              "threads_count": 12,
+              "start_time": 0.019340364
+            }]])
+            local diagnostic = parser({ output = output })
+            assert.same({
+                {
+                    row = 1,
+                    end_row = 1,
+                    col = 1,
+                    end_col = 10,
+                    severity = 2,
+                    code = "eslint(no-debugger)",
+                    message = "`debugger` statement is not allowed",
+                },
             }, diagnostic)
         end)
     end)
